@@ -17,7 +17,6 @@ let targetX;
 let targetY;
 let originalWidth;
 let originalHeight;
-
 let scratcher, canvasOriginalHeight, canvasOriginalWidth;
 var scratchers = [];
 var pct=0;
@@ -86,7 +85,7 @@ var pct=0;
                 $('#H3').hide();
                 $('#H4').hide();
                 //$('#scratcher3Pct').hide();
-
+                scratchers[0].clear()
                 confetti_effect();
             }
         }
@@ -213,64 +212,64 @@ var pct=0;
     
     //   }
     function positionCanvas() {
-        // Use media query to match CSS orientation logic
-    const isLandscape = window.matchMedia('(orientation: landscape) and (max-width: 1023px)').matches;
-    let factor=1;
-    const screenHeight = window.innerHeight;
-    const screenWidth = window.innerWidth;
-    //console.log("screen " + screenHeight + " " + screenWidth);
-    let scaledImageHeight, scaledImageWidth, imageLeftOffset, imageTopOffset,canvasX, canvasY;
-    let scale;
-    if (isLandscape) {
-        originalWidth = LANDSCAPE_IMAGE_WIDTH;
-        originalHeight = LANDSCAPE_IMAGE_HEIGHT;
-        targetX = LANDSCAPE_SCRATCHER_X;
-        targetY = LANDSCAPE_SCRATCHER_Y;
-        factor=1.5;
-        scale = screenWidth / originalWidth;
-        scaledImageWidth = screenWidth;
-        scaledImageHeight = originalHeight * scale;
-        imageLeftOffset = 0;
-        imageTopOffset = (screenHeight - scaledImageHeight) / 2;
-        canvasX = imageLeftOffset + targetX * scale;
-        canvasY = imageTopOffset + targetY * scale;
-    } else {
-        originalWidth = PORTRAIT_IMAGE_WIDTH;
-        originalHeight = PORTRAIT_IMAGE_HEIGHT;
-        targetX = PORTRAIT_SCRATCHER_X;
-        targetY = PORTRAIT_SCRATCHER_Y;
-        factor=1.17;
-        scale = screenHeight / originalHeight;
-        scaledImageWidth = originalWidth * scale;
-        scaledImageHeight = screenHeight;
-        imageLeftOffset = (screenWidth - scaledImageWidth) / 2;
-        imageTopOffset = 0;
-        canvasX = imageLeftOffset + targetX * scale;
-        canvasY = imageTopOffset + targetY * scale;
-    }
-       
+    
+   
+            // Use media query to match CSS orientation logic
+            const isLandscape = window.matchMedia('(orientation: landscape) and (max-width: 1023px)').matches;
+            let factor=1;
+            const screenHeight = window.visualViewport.height || window.innerHeight;
+            const screenWidth = window.visualViewport.width|| window.innerWidth;
+            //console.log("screen " + screenHeight + " " + screenWidth);
+            let scaledImageHeight, scaledImageWidth, imageLeftOffset, imageTopOffset,canvasX, canvasY;
+            let scale;
+            if (isLandscape) {
+                originalWidth = LANDSCAPE_IMAGE_WIDTH;
+                originalHeight = LANDSCAPE_IMAGE_HEIGHT;
+                targetX = LANDSCAPE_SCRATCHER_X;
+                targetY = LANDSCAPE_SCRATCHER_Y;
+                factor=1.5;
+                scale = screenWidth / originalWidth;
+                scaledImageWidth = screenWidth;
+                scaledImageHeight = originalHeight * scale;
+                imageLeftOffset = 0;
+                imageTopOffset = (screenHeight - scaledImageHeight) / 2;
+                canvasX = imageLeftOffset + targetX * scale;
+                canvasY = imageTopOffset + targetY * scale;
+            } else {
+                originalWidth = PORTRAIT_IMAGE_WIDTH;
+                originalHeight = PORTRAIT_IMAGE_HEIGHT;
+                targetX = PORTRAIT_SCRATCHER_X;
+                targetY = PORTRAIT_SCRATCHER_Y;
+                factor=1.17;
+                scale = screenHeight / originalHeight;
+                scaledImageWidth = originalWidth * scale;
+                scaledImageHeight = screenHeight;
+                imageLeftOffset = (screenWidth - scaledImageWidth) / 2;
+                imageTopOffset = 0;
+                canvasX = imageLeftOffset + targetX * scale;
+                canvasY = imageTopOffset + targetY * scale;
+            }
+                scratcher.style.left = `${canvasX}px`;
+                scratcher.style.top = `${canvasY}px`;
+                //alert();
+                //alert("screen " + screenHeight);
+                // Optionally scale canvas size too
+                    // Always use the original canvas size for scaling
+                scratcher.width = canvasOriginalWidth * scale * factor;
+                scratcher.height = canvasOriginalHeight * scale * factor;
 
-        
-        scratcher.style.left = `${canvasX}px`;
-        scratcher.style.top = `${canvasY}px`;
-        //alert();
-        //alert("screen " + screenHeight);
-        // Optionally scale canvas size too
-             // Always use the original canvas size for scaling
-        scratcher.width = canvasOriginalWidth * scale * factor;
-        scratcher.height = canvasOriginalHeight * scale * factor;
+                // For iOS safe area
+                scratcher.style.height = `calc(${scratcher.height}px - constant(safe-area-inset-bottom))`;
+                scratcher.style.height = `calc(${scratcher.height}px - env(safe-area-inset-bottom))`; 
+                
+                if(scratchers[0]){ 
+                    if (triggered) {
+                    scratchers[0].resetnoclear(true);
+                } else {
+                    scratchers[0].resetnoclear(false);
+                }   
+                }
 
-        // For iOS safe area
-        scratcher.style.height = `calc(${scratcher.height}px - constant(safe-area-inset-bottom))`;
-        scratcher.style.height = `calc(${scratcher.height}px - env(safe-area-inset-bottom))`; 
-        
-        if(scratchers[0]){ 
-            if (triggered) {
-            scratchers[0].resetnoclear(true);
-        } else {
-            scratchers[0].resetnoclear(false);
-        }   
-        }
       }
       
      
@@ -334,7 +333,7 @@ var pct=0;
         function onScratcherLoaded(ev) {
             
             scratcherLoadedCount++;
-            $("table1").width($(window).width());
+            //$("table1").width($(window).width());
             if (scratcherLoadedCount == scratchers.length) {
                 // all scratchers loaded!
     
