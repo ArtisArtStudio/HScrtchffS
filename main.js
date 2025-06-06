@@ -17,6 +17,7 @@ let targetX;
 let targetY;
 let originalWidth;
 let originalHeight;
+
 let scratcher, canvasOriginalHeight, canvasOriginalWidth;
 var scratchers = [];
 var pct=0;
@@ -85,7 +86,7 @@ var pct=0;
                 $('#H3').hide();
                 $('#H4').hide();
                 //$('#scratcher3Pct').hide();
-                scratchers[0].clear()
+                scratchers[0].clear();
                 confetti_effect();
             }
         }
